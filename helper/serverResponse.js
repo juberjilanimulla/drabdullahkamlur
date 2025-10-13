@@ -1,4 +1,4 @@
-export function successResponse(res, data, message) {
+export function successResponse(res, data = null, message) {
   res.status(200).json({
     status: 200,
     message,
