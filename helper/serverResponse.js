@@ -1,8 +1,8 @@
-export function successResponse(res, data = null, message) {
+export function successResponse(res, message, data = null) {
   res.status(200).json({
     status: 200,
-    message,
     error: false,
+    message,
     data,
   });
 }

@@ -49,13 +49,23 @@ app.use("/api/user", userRouter);
 
 //database connected successfullys
 //Database Connection
+// dbConnect()
+//   .then(() => {
+//     Admin();
+//     app.listen(() => {
+//       console.log(`Server is listening at ${port}`);
+//     });
+//   })
+//   .catch((error) => {
+//     console.log("Unable to connected to Database", error);
+//   });
 dbConnect()
   .then(() => {
     Admin();
-    app.listen(() => {
+    app.listen(port, () => {
       console.log(`Server is listening at ${port}`);
     });
   })
   .catch((error) => {
-    console.log("Unable to connected to Database", error);
+    console.log("Unable to connect to Database", error);
   });

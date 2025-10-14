@@ -17,7 +17,7 @@ async function signinHandler(req, res) {
     const email = req.body.email;
     const password = req.body.password;
     const users = await usermodel.findOne({ email });
-    console.log("users", users);
+
     if (!users) {
       return errorResponse(res, 404, "email not found");
     }
