@@ -11,7 +11,7 @@ export default usercontactRouter;
 async function createcontactHandler(req, res) {
   try {
     const { name, mobile, email, message } = req.body;
-    if (!name || !mobile || !email || !message) {
+    if (!name || !mobile) {
       return errorResponse(res, 400, "some params are missing");
     }
     const params = { name, mobile, email, message };

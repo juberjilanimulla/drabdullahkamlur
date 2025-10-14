@@ -4,8 +4,8 @@ const contactSchema = new Schema(
   {
     name: String,
     email: String,
-    subject: String,
-    description: { type: String },
+    mobile: String,
+    message: { type: String },
   },
   { timestamps: true, versionKey: false }
 );

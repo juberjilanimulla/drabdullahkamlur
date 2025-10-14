@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { errorResponse } from "../../helper/serverResponse.js";
+import { errorResponse, successResponse } from "../../helper/serverResponse.js";
 import commentmodel from "../../model/commentmodel.js";
 
 const admincommentRouter = Router();
@@ -104,16 +104,16 @@ async function publishedcommentHandler(req, res) {
     if (!existingComment) {
       return errorResponse(res, 404, "Comment not found");
     }
-    const updatedComment = await commentmodel.findByIdAndUpdate(
-      commentid,
-      { published },
-      { new: true }
-    );
 
-    if (!updatedComment) {
-      return errorResponse(res, 404, "Comment not found");
-    }
-    return successResponse(res, "success", updatedComment);
+    // Update and save
+    existingComment.published = published;
+    await existingComment.save();
+
+    return successResponse(
+      res,
+      "Comment updated successfully",
+      existingComment
+    );
   } catch (error) {
     console.log("error", error);
     errorResponse(res, 500, "internal server error");
