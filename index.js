@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import authRouter from "./routes/auth/authRouter.js";
 import adminRouter from "./routes/admin/adminRouter.js";
 import userRouter from "./routes/users/userRouter.js";
+import { Admin } from "./helper/helperFunction.js";
 
 const app = express();
 const port = config.PORT;
@@ -27,23 +28,18 @@ app.use(
   )
 );
 
-app.use(express());
+//middleware
+app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: "10mb" }));
-app.use(express.json({ limit: "100mb" }));
-app.use(express.urlencoded({ extended: true, limit: "100mb" }));
 
+// Error handling middleware for JSON parsing errors
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
     return res.status(400).json({ error: "Invalid JSON input" });
   }
   next(err); // Pass to the next middleware if not a JSON error
-});
-
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ error: "Internal server error" });
 });
 
 //routes
@@ -55,6 +51,7 @@ app.use("/api/user", userRouter);
 //Database Connection
 dbConnect()
   .then(() => {
+    Admin();
     app.listen(() => {
       console.log(`Server is listening at ${port}`);
     });

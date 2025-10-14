@@ -1,7 +1,6 @@
 import { Router } from "express";
 import adminblogRouter from "./adminblogRouter.js";
 import admincontactRouter from "./admincontactRouter.js";
-import adminmediaRouter from "./adminmediaRouter.js";
 
 const adminRouter = Router();
 

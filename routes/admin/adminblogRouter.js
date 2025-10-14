@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { successResponse, errorResponse } from "../../helper/serverResponse.js";
 import blogmodel from "../../model/blogmodel.js";
-import adminblogimagesRouter from "./admin/adminuploadblogimageRouter.js";
+// import adminblogimagesRouter from "./admin/adminuploadblogimageRouter.js";
 
 const adminblogRouter = Router();
 
@@ -12,7 +12,7 @@ adminblogRouter.delete("/delete", deleteblogHandler);
 adminblogRouter.put("/published", publishedapprovalHandler);
 adminblogRouter.post("/deleteimage", deleteimageblogHandler);
 adminblogRouter.post("/featured", featuredblogHandler);
-adminblogRouter.use("/blogimage", adminblogimagesRouter);
+// adminblogRouter.use("/blogimage", adminblogimagesRouter);
 
 export default adminblogRouter;
 

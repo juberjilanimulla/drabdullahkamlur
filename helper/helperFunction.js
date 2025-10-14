@@ -130,65 +130,12 @@ export async function Admin() {
         email: email,
         role: "admin",
         mobile: "0987654321",
-        password: bcryptPassword("Newzdak0832#*"),
+        password: bcryptPassword("1234"),
       });
     } else {
     }
   }
 }
-
-// export async function GetJobidNumber() {
-//   const now = new Date();
-//   const year = now.getFullYear();
-//   const month = String(now.getMonth() + 1).padStart(2, "0");
-
-//   const prefix = `${year}${month}`;
-
-//   // Find the highest serial number for the current month
-//   const lastproduct = await careermodel
-//     .findOne({
-//       jobid: new RegExp(`^${prefix}`),
-//     })
-//     .sort({ jobid: -1 })
-//     .exec();
-
-//   let serialNumber = "0001";
-//   if (lastproduct) {
-//     const lastSerial = parseInt(lastproduct.jobid.slice(-4), 10);
-//     serialNumber = String(lastSerial + 1).padStart(4, "0");
-//   }
-
-//   return `${prefix}${serialNumber}`;
-// }
-
-// const otpRequestStore = {};
-
-//  Function to check rate limit for OTP requests
-// export async function checkRateLimit(email) {
-//   const windowMs = 15 * 60 * 1000; // 15 minutes in milliseconds
-//   const maxRequests = 5;
-//   const now = Date.now();
-
-//   // Initialize request count for the mobile number if not exists
-//   if (!otpRequestStore[email]) {
-//     otpRequestStore[email] = [];
-//   }
-
-//   // Clean up old entries from the store
-//   otpRequestStore[email] = otpRequestStore[email].filter((entry) => {
-//     return entry.timestamp + windowMs > now;
-//   });
-
-//   // Check request count
-//   if (otpRequestStore[email].length >= maxRequests) {
-//     return false; // Rate limit exceeded
-//   }
-
-//   // Add current request to the store
-//   otpRequestStore[email].push({ timestamp: now });
-
-//   return true; // Within rate limit
-// }
 
 export default async function getnumber(id) {
   // console.log(id);
