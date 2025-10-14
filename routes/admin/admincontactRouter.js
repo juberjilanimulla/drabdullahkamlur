@@ -70,10 +70,12 @@ async function deletecontactHandler(req, res) {
     if (!_id) {
       return errorResponse(res, 400, "some params are missing");
     }
-    const contact = await contactmodel.findById({ _id: _id });
-    if (!contact) {
+    const existcontact = await contactmodel.findById({ _id: _id });
+    if (!existcontact) {
       return errorResponse(res, 404, "contact details not found");
     }
+    const contact = await contactmodel.findByIdAndDelete({ _id: _id });
+    successResponse(res, "Delete");
   } catch (error) {
     console.log("error", error);
     errorResponse(res, 500, "internal server error");
