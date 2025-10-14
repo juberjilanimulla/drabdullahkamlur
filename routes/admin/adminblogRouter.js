@@ -2,6 +2,15 @@ import { Router } from "express";
 import { successResponse, errorResponse } from "../../helper/serverResponse.js";
 import blogmodel from "../../model/blogmodel.js";
 import adminblogimagesRouter from "./adminuploadblogimageRouter.js";
+import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
+
+const s3 = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
 
 const adminblogRouter = Router();
 
@@ -217,26 +226,26 @@ async function publishedapprovalHandler(req, res) {
 
 async function deleteimageblogHandler(req, res) {
   try {
-    // const { _id } = req.body;
-    // if (!_id) {
-    //   return errorResponse(res, 400, "Blog ID (_id) is required");
-    // }
-    // const blog = await blogmodel.findById(_id);
-    // if (!blog) {
-    //   return errorResponse(res, 404, "Blog not found");
-    // }
-    // const imageUrl = blog.coverimage;
-    // const s3Key = imageUrl?.split(".amazonaws.com/")[1];
-    // if (s3Key) {
-    //   const deleteCommand = new DeleteObjectCommand({
-    //     Bucket: process.env.AWS_BUCKET_NAME,
-    //     Key: s3Key,
-    //   });
-    //   await s3.send(deleteCommand);
-    // }
-    // blog.coverimage = ""; // Clear image reference from DB
-    // await blog.save();
-    // return successResponse(res, "Blog image deleted successfully", blog);
+    const { _id } = req.body;
+    if (!_id) {
+      return errorResponse(res, 400, "Blog ID (_id) is required");
+    }
+    const blog = await blogmodel.findById(_id);
+    if (!blog) {
+      return errorResponse(res, 404, "Blog not found");
+    }
+    const imageUrl = blog.coverimage;
+    const s3Key = imageUrl?.split(".amazonaws.com/")[1];
+    if (s3Key) {
+      const deleteCommand = new DeleteObjectCommand({
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: s3Key,
+      });
+      await s3.send(deleteCommand);
+    }
+    blog.coverimage = ""; // Clear image reference from DB
+    await blog.save();
+    return successResponse(res, "Blog image deleted successfully", blog);
   } catch (error) {
     console.log("error", error);
     errorResponse(res, 500, "internal server error");
