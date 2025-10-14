@@ -7,6 +7,5 @@ const adminRouter = Router();
 
 adminRouter.use("/blog", adminblogRouter);
 adminRouter.use("/contact", admincontactRouter);
-adminRouter.use("/media", adminmediaRouter);
 
 export default adminRouter;
