@@ -48,17 +48,6 @@ app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
 
 //database connected successfullys
-//Database Connection
-// dbConnect()
-//   .then(() => {
-//     Admin();
-//     app.listen(() => {
-//       console.log(`Server is listening at ${port}`);
-//     });
-//   })
-//   .catch((error) => {
-//     console.log("Unable to connected to Database", error);
-//   });
 dbConnect()
   .then(() => {
     Admin();
