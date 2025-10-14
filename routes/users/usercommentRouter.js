@@ -4,7 +4,7 @@ import commentmodel from "../../model/commentmodel.js";
 
 const usercommentRouter = Router();
 
-usercommentRouter;
+usercommentRouter.get("/getall", getallcommentHandler);
 usercommentRouter.post("/create", createcommentHandler);
 
 export default usercommentRouter;
@@ -26,7 +26,8 @@ async function createcommentHandler(req, res) {
 
 async function getallcommentHandler(req, res) {
   try {
-    const { _id } = req.body;
+    const comment = await commentmodel.find({ published: true });
+    successResponse(res, "successfully comment", comment);
   } catch (error) {
     console.log("error", error);
     errorResponse(res, 500, "internal server error");
