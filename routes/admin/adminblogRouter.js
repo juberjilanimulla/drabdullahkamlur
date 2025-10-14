@@ -19,7 +19,7 @@ adminblogRouter.post("/create", createblogHandler);
 adminblogRouter.put("/update", updateblogHandler);
 adminblogRouter.delete("/delete", deleteblogHandler);
 adminblogRouter.put("/published", publishedapprovalHandler);
-adminblogRouter.post("/deleteimage", deleteimageblogHandler);
+adminblogRouter.delete("/deleteimage", deleteimageblogHandler);
 adminblogRouter.post("/featured", featuredblogHandler);
 adminblogRouter.use("/blogimage", adminblogimagesRouter);
 
@@ -154,28 +154,28 @@ async function updateblogHandler(req, res) {
 
 async function deleteblogHandler(req, res) {
   try {
-    // const { _id } = req.body;
-    // if (!_id) {
-    //   return errorResponse(res, 400, "blog ID (_id) is required");
-    // }
-    // // Find property before deletion (to access images)
-    // const blog = await blogmodel.findById(_id);
-    // if (!blog) {
-    //   return errorResponse(res, 404, "blog not found");
-    // }
-    // // Delete all images from S3
-    // const s3Key = blog.coverimage?.split(".amazonaws.com/")[1];
-    // if (s3Key) {
-    //   await s3.send(
-    //     new DeleteObjectCommand({
-    //       Bucket: process.env.AWS_BUCKET_NAME,
-    //       Key: s3Key,
-    //     })
-    //   );
-    // }
-    // // Delete blog from DB
-    // await blogmodel.findByIdAndDelete(_id);
-    // return successResponse(res, "blog and associated images deleted");
+    const { _id } = req.body;
+    if (!_id) {
+      return errorResponse(res, 400, "blog ID (_id) is required");
+    }
+    // Find property before deletion (to access images)
+    const blog = await blogmodel.findById(_id);
+    if (!blog) {
+      return errorResponse(res, 404, "blog not found");
+    }
+    // Delete all images from S3
+    const s3Key = blog.coverimage?.split(".amazonaws.com/")[1];
+    if (s3Key) {
+      await s3.send(
+        new DeleteObjectCommand({
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: s3Key,
+        })
+      );
+    }
+    // Delete blog from DB
+    await blogmodel.findByIdAndDelete(_id);
+    return successResponse(res, "blog and associated images deleted");
   } catch (error) {
     console.log("error", error);
     errorResponse(res, 500, "internal server error");
