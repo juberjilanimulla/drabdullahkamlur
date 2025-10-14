@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { errorResponse } from "../../helper/serverResponse.js";
+import { errorResponse, successResponse } from "../../helper/serverResponse.js";
+import commentmodel from "../../model/commentmodel.js";
 
 const usercommentRouter = Router();
 
+usercommentRouter;
 usercommentRouter.post("/create", createcommentHandler);
 
 export default usercommentRouter;
@@ -16,6 +18,15 @@ async function createcommentHandler(req, res) {
     const params = { name, email, message };
     const comment = await commentmodel.create(params);
     successResponse(res, "success", comment);
+  } catch (error) {
+    console.log("error", error);
+    errorResponse(res, 500, "internal server error");
+  }
+}
+
+async function getallcommentHandler(req, res) {
+  try {
+    const { _id } = req.body;
   } catch (error) {
     console.log("error", error);
     errorResponse(res, 500, "internal server error");
