@@ -3,6 +3,10 @@ import cors from "cors";
 import morgan from "morgan";
 import dbConnect from "./db.js";
 import config from "./config.js";
+import bodyParser from "body-parser";
+import authRouter from "./routes/auth/authRouter.js";
+import adminRouter from "./routes/admin/adminRouter.js";
+import userRouter from "./routes/users/userRouter.js";
 
 const app = express();
 const port = config.PORT;
