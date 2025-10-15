@@ -1,6 +1,7 @@
 import { Router } from "express";
 import mediamodel from "../../model/mediamodel.js";
 import { successResponse, errorResponse } from "../../helper/serverResponse.js";
+import adminmediaimageRouter from "./adminuploadmediaimageRouter.js";
 
 const adminmediaRotuer = Router();
 
@@ -8,7 +9,7 @@ adminmediaRotuer.post("/", getallmediaHandler);
 adminmediaRotuer.post("/create", createmediaHandler);
 adminmediaRotuer.put("/update", updatemediaHandler);
 adminmediaRotuer.delete("/delete", deletemediaHandler);
-
+adminmediaimageRouter.use("/upload", adminmediaimageRouter);
 export default adminmediaRotuer;
 
 async function getallmediaHandler(req, res) {
@@ -61,6 +62,28 @@ async function updatemediaHandler(req, res) {
 
 async function deletemediaHandler(req, res) {
   try {
+    // const { _id } = req.body;
+    // if (!_id) {
+    //   return errorResponse(res, 400, "blog ID (_id) is required");
+    // }
+    // // Find property before deletion (to access images)
+    // const blog = await blogmodel.findById(_id);
+    // if (!blog) {
+    //   return errorResponse(res, 404, "blog not found");
+    // }
+    // // Delete all images from S3
+    // const s3Key = blog.coverimage?.split(".amazonaws.com/")[1];
+    // if (s3Key) {
+    //   await s3.send(
+    //     new DeleteObjectCommand({
+    //       Bucket: process.env.AWS_BUCKET_NAME,
+    //       Key: s3Key,
+    //     })
+    //   );
+    // }
+    // // Delete blog from DB
+    // await blogmodel.findByIdAndDelete(_id);
+    // return successResponse(res, "blog and associated images deleted");
   } catch (error) {
     console.log("error", error);
     errorResponse(res, 500, "internal server error");
