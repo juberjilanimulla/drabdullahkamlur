@@ -8,7 +8,7 @@ adminvisitorRouter.get("/", getvisitorHandler);
 
 export default adminvisitorRouter;
 
-async function getVisitorHandler(req, res) {
+async function getvisitorHandler(req, res) {
   try {
     const visitor = await visitormodel.findOne();
     const totalCount = visitor ? visitor.count : 0;
