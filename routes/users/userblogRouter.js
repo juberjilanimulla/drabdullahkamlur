@@ -12,7 +12,9 @@ export default userblogRouter;
 
 async function getallblogHandler(req, res) {
   try {
-    const blog = await blogmodel.find({ published: true });
+    const blog = await blogmodel
+      .find({ published: true })
+      .sort({ createdAt: -1 });
     if (!blog) {
       return successResponse(res, 404, "blog not found");
     }
