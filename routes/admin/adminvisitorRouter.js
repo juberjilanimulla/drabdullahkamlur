@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { errorResponse, successResponse } from "../../helper/serverResponse.js";
+import visitormodel from "../../model/visitormodel.js";
 
 const adminvisitorRouter = Router();
+
+adminvisitorRouter.get("/", getvisitorHandler);
 
 export default adminvisitorRouter;
 
