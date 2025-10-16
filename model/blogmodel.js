@@ -46,6 +46,10 @@ const blogSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    readers: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true, versionKey: false }
 );
