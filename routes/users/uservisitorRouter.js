@@ -4,25 +4,50 @@ import visitormodel from "../../model/visitormodel.js";
 
 const uservisitorRouter = Router();
 
-uservisitorRouter.get("/", getvisitorHandler);
+uservisitorRouter.get("/", getIncrementVisitorHandler);
+uservisitorRouter.get("/get", getVisitorHandler);
 
 export default uservisitorRouter;
 
-async function getvisitorHandler(req, res) {
+// Increment visitor count
+async function getIncrementVisitorHandler(req, res) {
   try {
-    // Find the single visitor record
-    const visitor = await visitormodel.findOne();
+    let visitor = await visitormodel.findOne();
 
-    // If no record, create it
+    let previousCount = 0;
+    let currentCount = 0;
+
     if (!visitor) {
       visitor = await visitormodel.create({ count: 1 });
+      previousCount = 0;
+      currentCount = 1;
     } else {
+      previousCount = visitor.count;
       visitor.count += 1;
       await visitor.save();
+      currentCount = visitor.count;
     }
 
-    successResponse(res, 200, "Visitor count incremented", {
-      count: visitor.count,
+    // ✅ Correct usage
+    successResponse(res, "Visitor count incremented successfully", {
+      previousCount,
+      currentCount,
+    });
+  } catch (error) {
+    console.log("error", error);
+    errorResponse(res, 500, "Internal server error");
+  }
+}
+
+// Get total visitor count
+async function getVisitorHandler(req, res) {
+  try {
+    const visitor = await visitormodel.findOne();
+    const totalCount = visitor ? visitor.count : 0;
+
+    // ✅ Correct usage
+    successResponse(res, "Total visitor count fetched successfully", {
+      totalCount,
     });
   } catch (error) {
     console.log("error", error);
